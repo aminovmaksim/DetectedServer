@@ -2,12 +2,13 @@ package com.devian.detected.repository;
 
 import com.devian.detected.domain.User;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 import java.util.UUID;
 
-public interface UserRepository extends CrudRepository<User, Long> {
-    Optional<User> findByUuid(UUID uuid);
-    Optional<User> findByLogin(String login);
+@Repository
+public interface UserRepository extends CrudRepository<User, String> {
+    Optional<User> findByUid(String uid);
     Optional<User> findByEmail(String email);
 }

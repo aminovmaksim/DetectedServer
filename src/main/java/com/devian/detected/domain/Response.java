@@ -1,5 +1,7 @@
 package com.devian.detected.domain;
 
+import com.devian.detected.security.AES256;
+
 public class Response {
 
     /*
@@ -8,47 +10,31 @@ public class Response {
 
     ------------ OK ------------
 
-    1 : sign up success, return uuid
+    10 : auth success
 
     ----------- ERROR ----------
 
-    -1 : sign up failure, login exist
-    -2 : sign up failure, email exist
-    -3 : sign up failure
+
 
      */
 
 
     private int type;
-    private String info;
+    private String data;
 
-    public Response(int type, String info) {
+    public Response(int type, String data) {
         this.type = type;
-        this.info = info;
+        this.data = AES256.encrypt(data);
     }
 
     public Response(int type) {
         this.type = type;
-        switch (type) {
-            case 1:
-                break;
-            case -1:
-                info = "sign up failure, login exist";
-                break;
-            case -2:
-                info = "sign up failure, email exist";
-                break;
-            case -3:
-                info = "sign up failure";
-                break;
-            default:
-                info = "OK";
-        }
+        this.data = "";
     }
 
     public Response() {
         this.type = 0;
-        this.info = "";
+        this.data = "";
     }
 
     public int getType() {

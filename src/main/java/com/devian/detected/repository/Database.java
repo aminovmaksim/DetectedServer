@@ -9,4 +9,6 @@ import org.springframework.stereotype.Component;
 public class Database {
     @Getter
     private final UserRepository userRepository;
+    @Getter
+    private final StatsRepository statsRepository;
 }

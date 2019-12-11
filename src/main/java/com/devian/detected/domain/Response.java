@@ -12,12 +12,13 @@ public class Response {
 
     10 : auth success
 
+    20 : stats exists
+
     ----------- ERROR ----------
 
-
+    -20 : stats does not exist
 
      */
-
 
     private int type;
     private String data;
@@ -43,5 +44,13 @@ public class Response {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getData() {
+        return AES256.decrypt(data);
+    }
+
+    public void setData(String data) {
+        this.data = AES256.encrypt(data);
     }
 }

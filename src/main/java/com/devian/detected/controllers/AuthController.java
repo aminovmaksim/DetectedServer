@@ -2,6 +2,7 @@ package com.devian.detected.controllers;
 
 import com.devian.detected.domain.Response;
 import com.devian.detected.domain.User;
+import com.devian.detected.repository.Database;
 import com.devian.detected.repository.UserRepository;
 import com.devian.detected.security.AES256;
 import com.google.gson.Gson;
@@ -21,10 +22,10 @@ public class AuthController {
 
     private Gson gson = new Gson();
 
-    private final UserRepository userRepository;
+    private final Database database;
 
-    public AuthController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public AuthController(Database database) {
+        this.database = database;
     }
 
     @GetMapping(value = "/auth")
@@ -38,7 +39,7 @@ public class AuthController {
         User user = gson.fromJson(userData, User.class);
         user.setLastLogin(new Date());
 
-        userRepository.save(user);
+        database.getUserRepository().save(user);
 
         return new ResponseEntity<>(new Response(10), HttpStatus.OK);
     }

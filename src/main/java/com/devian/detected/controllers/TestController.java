@@ -1,7 +1,6 @@
 package com.devian.detected.controllers;
 
 import com.devian.detected.domain.Response;
-import com.devian.detected.security.AES256;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,7 +21,7 @@ public class TestController {
         log.info("test connection request");
 
         return new ResponseEntity<>(
-                gson.toJson(new Response(0, "Connection established")),
+                gson.toJson(new Response(Response.TYPE_DEFAULT, "Connection established")),
                 HttpStatus.OK);
     }
 

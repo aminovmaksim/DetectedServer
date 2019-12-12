@@ -38,11 +38,12 @@ public class StatsController {
         String uid = userData;
         Optional<UserStats> optionalUserStats = database.getStatsRepository().findByUid(uid);
         if (!optionalUserStats.isPresent()) {
-            return new ResponseEntity<>(new Response(-20), HttpStatus.OK);
+            return new ResponseEntity<>(new Response(Response.TYPE_STATS_DOES_NOT_EXIST), HttpStatus.OK);
         }
 
         String userStats = gson.toJson(optionalUserStats.get());
-        Response response = new Response(20, userStats);
+        Response response = new Response(Response.TYPE_STATS_EXISTS, userStats);
+        log.info(gson.toJson(response));
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

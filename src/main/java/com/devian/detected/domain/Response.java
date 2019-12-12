@@ -4,21 +4,7 @@ import com.devian.detected.security.AES256;
 
 public class Response {
 
-    /*
 
-    0 : default
-
-    ------------ OK ------------
-
-    10 : auth success
-
-    20 : stats exists
-
-    ----------- ERROR ----------
-
-    -20 : stats does not exist
-
-     */
 
     private int type;
     private String data;
@@ -47,10 +33,25 @@ public class Response {
     }
 
     public String getData() {
-        return AES256.decrypt(data);
+        return data;
     }
 
     public void setData(String data) {
         this.data = AES256.encrypt(data);
     }
+
+    public static final int TYPE_DEFAULT = 0;
+
+    public static final int TYPE_AUTH_SUCCESS = 10;
+
+    public static final int TYPE_STATS_EXISTS = 20;
+
+    public static final int TYPE_TASK_SUCCESS = 30;
+    public static final int TYPE_TASK_ADDED = 31;
+    public static final int TYPE_TASK_COMPLETED = 32;
+
+    public static final int TYPE_STATS_DOES_NOT_EXIST = -20;
+
+    public static final int TYPE_TASK_FAILURE = -30;
+    public static final int TYPE_TASK_ALREADY_COMPLETED = -32;
 }

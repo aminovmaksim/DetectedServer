@@ -11,4 +11,6 @@ public class Database {
     private final UserRepository userRepository;
     @Getter
     private final StatsRepository statsRepository;
+    @Getter
+    private final TaskRepository taskRepository;
 }

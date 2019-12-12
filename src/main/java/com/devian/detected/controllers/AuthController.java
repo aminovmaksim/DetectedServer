@@ -48,7 +48,7 @@ public class AuthController {
 
         database.getUserRepository().save(user);
 
-        return new ResponseEntity<>(new Response(10), HttpStatus.OK);
+        return new ResponseEntity<>(new Response(Response.TYPE_AUTH_SUCCESS), HttpStatus.OK);
     }
 
 }

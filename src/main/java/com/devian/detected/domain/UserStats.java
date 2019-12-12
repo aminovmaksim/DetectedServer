@@ -31,6 +31,12 @@ public class UserStats {
         this.level = LevelManager.getLevelByPoints(points);
     }
 
+    public void completeTask(Task task) {
+        this.points += task.getReward();
+        this.tags += 1;
+        this.level = LevelManager.getLevelByPoints(points);
+    }
+
     public void setTags(int tags) {
         this.tags = tags;
     }

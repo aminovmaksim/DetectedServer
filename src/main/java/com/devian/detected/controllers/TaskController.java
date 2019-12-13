@@ -6,6 +6,7 @@ import com.devian.detected.domain.User;
 import com.devian.detected.domain.UserStats;
 import com.devian.detected.repository.Database;
 import com.devian.detected.security.AES256;
+import com.devian.detected.utils.TimeManager;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -15,10 +16,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
+import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Slf4j
 @RestController()
@@ -85,11 +87,13 @@ public class TaskController {
         userStats.completeTask(task);
         task.setCompleted(true);
         task.setExecutor(userStats.getUid());
-        task.setCompletedTime(new Date());
+        task.setCompletedTime(TimeManager.getCurrentTime());
 
         database.getTaskRepository().save(task);
         database.getStatsRepository().save(userStats);
 
-        return new ResponseEntity<>(new Response(Response.TYPE_TASK_COMPLETED), HttpStatus.OK);
+        String res = gson.toJson(task);
+
+        return new ResponseEntity<>(new Response(Response.TYPE_TASK_COMPLETED, res), HttpStatus.OK);
     }
 }

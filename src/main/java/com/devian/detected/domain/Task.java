@@ -4,8 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.UUID;
+import java.sql.Date;
 
 @Data
 @Entity
@@ -15,7 +14,7 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private UUID tagId;
+    private String tagId;
     private int reward;
     private int type;
     private float Latitude;

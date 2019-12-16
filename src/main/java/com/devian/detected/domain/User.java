@@ -23,4 +23,5 @@ public class User {
         this.email = email;
         this.lastLogin = null;
     }
+
 }

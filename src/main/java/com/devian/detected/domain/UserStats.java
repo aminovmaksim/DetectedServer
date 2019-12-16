@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Entity
 @NoArgsConstructor
 @Table(name = "users_stats")
-public class UserStats {
+public class UserStats implements Comparable<UserStats> {
     @Id
     private String uid;
     private long points;
@@ -55,5 +55,12 @@ public class UserStats {
 
     public int getTags() {
         return tags;
+    }
+
+    @Override
+    public int compareTo(UserStats userStats) {
+        Long a = getPoints();
+        Long b = userStats.getPoints();
+        return a.compareTo(b);
     }
 }

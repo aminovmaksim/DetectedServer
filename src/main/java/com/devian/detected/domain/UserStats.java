@@ -61,6 +61,6 @@ public class UserStats implements Comparable<UserStats> {
     public int compareTo(UserStats userStats) {
         Long a = getPoints();
         Long b = userStats.getPoints();
-        return a.compareTo(b);
+        return b.compareTo(a);
     }
 }

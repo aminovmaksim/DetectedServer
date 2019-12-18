@@ -1,5 +1,6 @@
 package com.devian.detected.controllers;
 
+import com.devian.detected.domain.RankRow;
 import com.devian.detected.domain.Response;
 import com.devian.detected.domain.UserStats;
 import com.devian.detected.repository.Database;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -46,5 +48,28 @@ public class StatsController {
         log.info(gson.toJson(response));
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/getRankTop10", produces = MediaType.APPLICATION_JSON_VALUE)
+    private ResponseEntity<Response> getRankTop10() {
+        List<RankRow> rankRows = Rankings.top10;
+        return new ResponseEntity<>(new Response(Response.TYPE_RANK_SUCCESS, gson.toJson(rankRows)), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/getPersonalRank", produces = MediaType.APPLICATION_JSON_VALUE)
+    private ResponseEntity<Response> getPersonalRank(
+            @RequestHeader(value = "data") String data
+    ) {
+        //decrypt incoming data
+        String userData = AES256.decrypt(data);
+        log.info("New rank request: " + userData);
+
+        String uid = userData;
+        Optional<RankRow> optionalRankRow = database.getRankRepository().findByUid(uid);
+        if (optionalRankRow.isPresent()) {
+            return new ResponseEntity<>(new Response(Response.TYPE_RANK_SUCCESS, gson.toJson(optionalRankRow.get())), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new Response(Response.TYPE_RANK_FAILURE), HttpStatus.OK);
+        }
     }
 }

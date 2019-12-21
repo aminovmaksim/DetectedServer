@@ -17,6 +17,6 @@ public class RankRow {
     @Id
     private String uid;
     private long rank;
-
-
+    private String nickname;
+    private long points;
 }

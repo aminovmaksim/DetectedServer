@@ -23,6 +23,10 @@ public class Task {
     private String executor;
     private Date completedTime;
 
+    private String title;
+    private String description;
+    private String imgUrl;
+
     public static final int TYPE_MAP = 1;
     public static final int TYPE_TEXT = 2;
 }

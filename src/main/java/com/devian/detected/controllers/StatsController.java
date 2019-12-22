@@ -45,13 +45,13 @@ public class StatsController {
 
         String userStats = gson.toJson(optionalUserStats.get());
         Response response = new Response(Response.TYPE_STATS_EXISTS, userStats);
-        log.info(gson.toJson(response));
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping(value = "/getRankTop10", produces = MediaType.APPLICATION_JSON_VALUE)
     private ResponseEntity<Response> getRankTop10() {
+        log.info("New top10 request");
         List<RankRow> rankRows = Rankings.top10;
         return new ResponseEntity<>(new Response(Response.TYPE_RANK_SUCCESS, gson.toJson(rankRows)), HttpStatus.OK);
     }

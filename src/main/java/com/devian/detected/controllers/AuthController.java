@@ -51,4 +51,20 @@ public class AuthController {
         return new ResponseEntity<>(new Response(Response.TYPE_AUTH_SUCCESS), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/getUserInfo")
+    private ResponseEntity<Response> getUserInfo(
+            @RequestHeader(value = "data") String data
+    ) {
+        //decrypt incoming data
+        String uid = AES256.decrypt(data);
+        log.info("New getUserInfo request: " + uid);
+
+        Optional<User> optionalUser = database.getUserRepository().findByUid(uid);
+        if (optionalUser.isPresent()) {
+            String response = gson.toJson(optionalUser.get());
+            return new ResponseEntity<>(new Response(Response.TYPE_AUTH_SUCCESS, response), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new Response(Response.TYPE_AUTH_FAILED), HttpStatus.OK);
+        }
+    }
 }

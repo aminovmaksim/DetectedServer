@@ -28,7 +28,7 @@ public class Rankings {
         this.database = database;
     }
 
-    @Scheduled(fixedDelay = 300000)
+    @Scheduled(fixedDelay = 60000)
     public void proceedRank() {
         log.info("updating the rank");
         top10.clear();

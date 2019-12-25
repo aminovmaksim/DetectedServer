@@ -98,4 +98,11 @@ public class TaskController {
 
         return new ResponseEntity<>(new Response(Response.TYPE_TASK_COMPLETED, res), HttpStatus.OK);
     }
+
+    @GetMapping(value = "/getEvent")
+    private ResponseEntity<Response> getEvent() {
+        log.info("New event request");
+        String event = "Стань топ-1 кулхацкеров до 31 декабря и заработай 1000 Руб.";
+        return new ResponseEntity<>(new Response(Response.TYPE_TASK_SUCCESS, event), HttpStatus.OK);
+    }
 }

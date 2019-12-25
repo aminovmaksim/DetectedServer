@@ -52,6 +52,8 @@ public class Response {
 
     public static final int TYPE_RANK_SUCCESS = 40;
 
+    public static final int TYPE_AUTH_FAILED = 10;
+
     public static final int TYPE_STATS_DOES_NOT_EXIST = -20;
 
     public static final int TYPE_TASK_FAILURE = -30;

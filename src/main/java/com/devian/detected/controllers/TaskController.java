@@ -50,7 +50,7 @@ public class TaskController {
     @GetMapping(value = "/getMapTasks")
     private ResponseEntity<Response> getMapTasks() {
         log.info("Map tasks request");
-        List<Task> mapTasks = database.getTaskRepository().findAllByTypeAndCompleted(Task.TYPE_MAP, false);
+        List<Task> mapTasks = database.getTaskRepository().findAllByTypeAndCompleted(Task.TYPE_MAP, 0);
         String response_data = gson.toJson(mapTasks);
         return new ResponseEntity<>(new Response(Response.TYPE_TASK_SUCCESS, response_data), HttpStatus.OK);
     }
@@ -58,7 +58,7 @@ public class TaskController {
     @GetMapping(value = "/getTextTasks")
     protected ResponseEntity<Response> getTextTasks() {
         log.info("Text tasks request");
-        List<Task> textTasks = database.getTaskRepository().findAllByTypeAndCompleted(Task.TYPE_TEXT, false);
+        List<Task> textTasks = database.getTaskRepository().findAllByTypeAndCompleted(Task.TYPE_TEXT, 0);
         String response_data = gson.toJson(textTasks);
         return new ResponseEntity<>(new Response(Response.TYPE_TASK_SUCCESS, response_data), HttpStatus.OK);
     }
@@ -87,7 +87,7 @@ public class TaskController {
         }
 
         userStats.completeTask(task);
-        task.setCompleted(true);
+        task.setCompleted(1);
         task.setExecutor(userStats.getUid());
         task.setCompletedTime(TimeManager.getCurrentTime());
 

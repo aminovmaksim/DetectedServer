@@ -19,13 +19,17 @@ public class Task {
     private int type;
     private float Latitude;
     private float Longitude;
-    private boolean completed;
+    private int completed;
     private String executor;
     private Date completedTime;
 
     private String title;
     private String description;
     private String imgUrl;
+
+    public boolean isCompleted() {
+        return completed != 0;
+    }
 
     public static final int TYPE_MAP = 1;
     public static final int TYPE_TEXT = 2;

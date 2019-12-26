@@ -9,6 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface TaskRepository extends CrudRepository<Task, Long> {
-    List<Task> findAllByTypeAndCompleted(int type, boolean completed);
+    List<Task> findAllByTypeAndCompleted(int type, int completed);
+
     Optional<Task> findByTagId(String tagId);
 }

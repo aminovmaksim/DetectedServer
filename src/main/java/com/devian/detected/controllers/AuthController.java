@@ -6,8 +6,10 @@ import com.devian.detected.domain.UserStats;
 import com.devian.detected.repository.Database;
 import com.devian.detected.repository.UserRepository;
 import com.devian.detected.security.AES256;
+import com.devian.detected.utils.GsonSerializer;
 import com.devian.detected.utils.TimeManager;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,13 +17,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.Optional;
 
 @Slf4j
 @RestController()
 public class AuthController {
 
-    private Gson gson = new Gson();
+    private Gson gson = GsonSerializer.getInstance().getGson();
 
     private final Database database;
 
@@ -38,7 +42,7 @@ public class AuthController {
         log.info("New Auth: " + userData);
 
         User user = gson.fromJson(userData, User.class);
-        user.setLastLogin(TimeManager.getCurrentTime());
+        user.setLastLogin(new Date());
 
         Optional<UserStats> optionalUserStats = database.getStatsRepository().findByUid(user.getUid());
         if (!optionalUserStats.isPresent()) {

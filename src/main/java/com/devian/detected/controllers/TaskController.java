@@ -102,7 +102,7 @@ public class TaskController {
     @GetMapping(value = "/getEvent")
     private ResponseEntity<Response> getEvent() {
         log.info("New event request");
-        String event = "Стань топ-1 кулхацкеров до 31 декабря и заработай 1000 Руб.";
+        String event = "Стань топ-1 среди всех кулхацкеров до 31 января и получи секретное приглашение";
         return new ResponseEntity<>(new Response(Response.TYPE_TASK_SUCCESS, event), HttpStatus.OK);
     }
 }

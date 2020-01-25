@@ -4,8 +4,6 @@ import com.devian.detected.security.AES256;
 
 public class Response {
 
-
-
     private int type;
     private String data;
 
@@ -22,14 +20,6 @@ public class Response {
     public Response() {
         this.type = 0;
         this.data = "";
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
     }
 
     public String getData() {

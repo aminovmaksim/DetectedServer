@@ -2,7 +2,6 @@ package com.devian.detected.controllers;
 
 import com.devian.detected.domain.Response;
 import com.devian.detected.domain.Task;
-import com.devian.detected.domain.User;
 import com.devian.detected.domain.UserStats;
 import com.devian.detected.repository.Database;
 import com.devian.detected.security.AES256;
@@ -16,9 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 

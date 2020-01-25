@@ -15,4 +15,5 @@ public class Database {
     private final TaskRepository taskRepository;
     @Getter
     private final RankRepository rankRepository;
+
 }

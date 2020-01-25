@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,7 +33,6 @@ public class Rankings {
         top10.clear();
 
         List<UserStats> userStats = database.getStatsRepository().findAll();
-        List<User> users = database.getUserRepository().findAll();
 
         Collections.sort(userStats);
         List<RankRow> rankRows = new ArrayList<>();

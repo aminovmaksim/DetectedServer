@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.Optional;
 
 @Slf4j
-@RestController()
+@RestController
 public class AuthController {
 
     private Gson gson = GsonSerializer.getInstance().getGson();
@@ -94,7 +94,7 @@ public class AuthController {
                 return new ResponseEntity<>(new Response(Response.TYPE_CHANGE_NICKNAME_SUCCESS), HttpStatus.OK);
             }
         } else {
-            return new ResponseEntity<>(new Response(Response.TYPE_AUTH_FAILED), HttpStatus.OK);
+            return new ResponseEntity<>(new Response(Response.TYPE_CHANGE_NICKNAME_FAILURE), HttpStatus.OK);
         }
     }
 }

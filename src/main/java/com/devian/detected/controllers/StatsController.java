@@ -34,10 +34,9 @@ public class StatsController {
             @RequestHeader(value = "data") String data
     ) {
         //decrypt incoming data
-        String userData = AES256.decrypt(data);
-        log.info("New stats request: " + userData);
+        String uid = AES256.decrypt(data);
+        log.info("New stats request: " + uid);
 
-        String uid = userData;
         Optional<UserStats> optionalUserStats = database.getStatsRepository().findByUid(uid);
         if (!optionalUserStats.isPresent()) {
             return new ResponseEntity<>(new Response(Response.TYPE_STATS_DOES_NOT_EXIST), HttpStatus.OK);
@@ -61,15 +60,12 @@ public class StatsController {
             @RequestHeader(value = "data") String data
     ) {
         //decrypt incoming data
-        String userData = AES256.decrypt(data);
-        log.info("New rank request: " + userData);
+        String uid = AES256.decrypt(data);
+        log.info("New rank request: " + uid);
 
-        String uid = userData;
         Optional<RankRow> optionalRankRow = database.getRankRepository().findByUid(uid);
-        if (optionalRankRow.isPresent()) {
-            return new ResponseEntity<>(new Response(Response.TYPE_RANK_SUCCESS, gson.toJson(optionalRankRow.get())), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(new Response(Response.TYPE_RANK_FAILURE), HttpStatus.OK);
-        }
+        return optionalRankRow
+                .map(rankRow -> new ResponseEntity<>(new Response(Response.TYPE_RANK_SUCCESS, gson.toJson(rankRow)), HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(new Response(Response.TYPE_RANK_FAILURE), HttpStatus.OK));
     }
 }

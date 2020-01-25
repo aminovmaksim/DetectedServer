@@ -1,8 +1,9 @@
 # Database
 spring.datasource.url=jdbc:postgresql://localhost:5432/detected
 spring.datasource.username=postgres
-spring.datasource.password=bd72uem2mbs3
+spring.datasource.password=123456
 spring.jpa.hibernate.ddl-auto=update
+
 # Encryption
 encryption.enabled=true
-encryption.key=qMg88AeRKteP4H2NTzU9s3tTWafmcBZGs3CTE7rRUqJDBVQqFqrQ4aYLmx7YZfNN
+encryption.key=********************

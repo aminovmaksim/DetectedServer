@@ -1,14 +1,13 @@
 package com.devian.detected.controllers;
 
-import com.devian.detected.domain.Response;
+import com.devian.detected.domain.network.Response;
 import com.devian.detected.domain.User;
 import com.devian.detected.domain.UserStats;
 import com.devian.detected.repository.Database;
-import com.devian.detected.security.AES256;
 import com.devian.detected.utils.GsonSerializer;
+import com.devian.detected.utils.NetworkService;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,11 +33,10 @@ public class AuthController {
     private ResponseEntity<Response> auth(
             @RequestHeader(value = "data") String data
     ) {
-        //decrypt incoming data
-        String userData = AES256.decrypt(data);
-        log.info("New Auth: " + userData);
+        String requestData = NetworkService.getInstance().proceedRequest(data);
+        log.info("New Auth: " + requestData);
 
-        User user = gson.fromJson(userData, User.class);
+        User user = gson.fromJson(requestData, User.class);
 
         Optional<User> optionalUser = database.getUserRepository().findByUid(user.getUid());
         if (optionalUser.isPresent()) {
@@ -54,23 +52,22 @@ public class AuthController {
             database.getStatsRepository().save(userStats);
         }
 
-        return new ResponseEntity<>(new Response(Response.TYPE_AUTH_SUCCESS), HttpStatus.OK);
+        return NetworkService.getInstance().proceedResponse(Response.TYPE_AUTH_SUCCESS);
     }
 
     @GetMapping(value = "/getUserInfo")
     private ResponseEntity<Response> getUserInfo(
             @RequestHeader(value = "data") String data
     ) {
-        //decrypt incoming data
-        String uid = AES256.decrypt(data);
-        log.info("New getUserInfo request: " + uid);
+        String requestData = NetworkService.getInstance().proceedRequest(data);
+        log.info("New getUserInfo request: " + requestData);
 
-        Optional<User> optionalUser = database.getUserRepository().findByUid(uid);
+        Optional<User> optionalUser = database.getUserRepository().findByUid(requestData);
         if (optionalUser.isPresent()) {
             String response = gson.toJson(optionalUser.get());
-            return new ResponseEntity<>(new Response(Response.TYPE_AUTH_SUCCESS, response), HttpStatus.OK);
+            return NetworkService.getInstance().proceedResponse(Response.TYPE_AUTH_SUCCESS, response);
         } else {
-            return new ResponseEntity<>(new Response(Response.TYPE_AUTH_FAILED), HttpStatus.OK);
+            return NetworkService.getInstance().proceedResponse(Response.TYPE_AUTH_FAILED);
         }
     }
 
@@ -78,23 +75,22 @@ public class AuthController {
     private ResponseEntity<Response> changeNickname(
             @RequestHeader(value = "data") String data
     ) {
-        //decrypt incoming data
-        String userData = AES256.decrypt(data);
-        log.info("New changeNickname request: " + userData);
+        String requestData = NetworkService.getInstance().proceedRequest(data);
+        log.info("New changeNickname request: " + requestData);
 
-        User user = gson.fromJson(userData, User.class);
+        User user = gson.fromJson(requestData, User.class);
 
         Optional<User> optionalUser = database.getUserRepository().findByUid(user.getUid());
         if (optionalUser.isPresent()) {
             Optional<User> sameNickname = database.getUserRepository().findByDisplayName(user.getDisplayName());
             if (sameNickname.isPresent()) {
-                return new ResponseEntity<>(new Response(Response.TYPE_CHANGE_NICKNAME_EXISTS), HttpStatus.OK);
+                return NetworkService.getInstance().proceedResponse(Response.TYPE_CHANGE_NICKNAME_EXISTS);
             } else {
                 database.getUserRepository().save(user);
-                return new ResponseEntity<>(new Response(Response.TYPE_CHANGE_NICKNAME_SUCCESS), HttpStatus.OK);
+                return NetworkService.getInstance().proceedResponse(Response.TYPE_CHANGE_NICKNAME_SUCCESS);
             }
         } else {
-            return new ResponseEntity<>(new Response(Response.TYPE_CHANGE_NICKNAME_FAILURE), HttpStatus.OK);
+            return NetworkService.getInstance().proceedResponse(Response.TYPE_CHANGE_NICKNAME_FAILURE);
         }
     }
 }

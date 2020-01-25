@@ -1,4 +1,4 @@
-package com.devian.detected.controllers;
+package com.devian.detected.services;
 
 import com.devian.detected.domain.RankRow;
 import com.devian.detected.domain.User;
@@ -17,13 +17,13 @@ import java.util.Optional;
 @Slf4j
 @Configuration
 @EnableScheduling
-public class Rankings {
+public class RankingService {
 
     private final Database database;
 
     public static List<RankRow> top10 = new ArrayList<>();
 
-    public Rankings(Database database) {
+    public RankingService(Database database) {
         this.database = database;
     }
 

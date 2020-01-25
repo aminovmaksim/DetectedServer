@@ -1,13 +1,14 @@
 package com.devian.detected.controllers;
 
 import com.devian.detected.domain.RankRow;
-import com.devian.detected.domain.Response;
+import com.devian.detected.domain.network.Response;
 import com.devian.detected.domain.UserStats;
 import com.devian.detected.repository.Database;
-import com.devian.detected.security.AES256;
+import com.devian.detected.services.RankingService;
+import com.devian.detected.utils.GsonSerializer;
+import com.devian.detected.utils.NetworkService;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +22,7 @@ import java.util.Optional;
 @RestController()
 public class StatsController {
 
-    private Gson gson = new Gson();
+    private Gson gson = GsonSerializer.getInstance().getGson();
 
     private final Database database;
 
@@ -33,39 +34,37 @@ public class StatsController {
     private ResponseEntity<Response> getStats(
             @RequestHeader(value = "data") String data
     ) {
-        //decrypt incoming data
-        String uid = AES256.decrypt(data);
+        String uid = NetworkService.getInstance().proceedRequest(data);
         log.info("New stats request: " + uid);
 
         Optional<UserStats> optionalUserStats = database.getStatsRepository().findByUid(uid);
         if (!optionalUserStats.isPresent()) {
-            return new ResponseEntity<>(new Response(Response.TYPE_STATS_DOES_NOT_EXIST), HttpStatus.OK);
+            return NetworkService.getInstance().proceedResponse(Response.TYPE_STATS_DOES_NOT_EXIST);
         }
-
         String userStats = gson.toJson(optionalUserStats.get());
-        Response response = new Response(Response.TYPE_STATS_EXISTS, userStats);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return NetworkService.getInstance().proceedResponse(Response.TYPE_STATS_EXISTS, userStats);
     }
 
     @GetMapping(value = "/getRankTop10", produces = MediaType.APPLICATION_JSON_VALUE)
     private ResponseEntity<Response> getRankTop10() {
         log.info("New top10 request");
-        List<RankRow> rankRows = Rankings.top10;
-        return new ResponseEntity<>(new Response(Response.TYPE_RANK_SUCCESS, gson.toJson(rankRows)), HttpStatus.OK);
+        List<RankRow> rankRows = RankingService.top10;
+        String responseData = gson.toJson(rankRows);
+
+        return NetworkService.getInstance().proceedResponse(Response.TYPE_RANK_SUCCESS, responseData);
     }
 
     @GetMapping(value = "/getPersonalRank", produces = MediaType.APPLICATION_JSON_VALUE)
     private ResponseEntity<Response> getPersonalRank(
             @RequestHeader(value = "data") String data
     ) {
-        //decrypt incoming data
-        String uid = AES256.decrypt(data);
+        String uid = NetworkService.getInstance().proceedRequest(data);
         log.info("New rank request: " + uid);
 
         Optional<RankRow> optionalRankRow = database.getRankRepository().findByUid(uid);
         return optionalRankRow
-                .map(rankRow -> new ResponseEntity<>(new Response(Response.TYPE_RANK_SUCCESS, gson.toJson(rankRow)), HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(new Response(Response.TYPE_RANK_FAILURE), HttpStatus.OK));
+                .map(rankRow -> NetworkService.getInstance().proceedResponse(Response.TYPE_RANK_SUCCESS, gson.toJson(rankRow)))
+                .orElseGet(() -> NetworkService.getInstance().proceedResponse(Response.TYPE_RANK_FAILURE));
     }
 }

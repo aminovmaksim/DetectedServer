@@ -1,6 +1,4 @@
-package com.devian.detected.domain;
-
-import com.devian.detected.security.AES256;
+package com.devian.detected.domain.network;
 
 public class Response {
 
@@ -9,16 +7,11 @@ public class Response {
 
     public Response(int type, String data) {
         this.type = type;
-        this.data = AES256.encrypt(data);
+        this.data = data;
     }
 
     public Response(int type) {
         this.type = type;
-        this.data = "";
-    }
-
-    public Response() {
-        this.type = 0;
         this.data = "";
     }
 
@@ -27,10 +20,12 @@ public class Response {
     }
 
     public void setData(String data) {
-        this.data = AES256.encrypt(data);
+        this.data = data;
     }
 
     public static final int TYPE_DEFAULT = 0;
+
+    public static final int TYPE_ERROR = -1;
 
     public static final int TYPE_AUTH_SUCCESS = 10;
 

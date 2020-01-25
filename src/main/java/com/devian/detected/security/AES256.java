@@ -1,4 +1,6 @@
 package com.devian.detected.security;
+import com.devian.detected.DetectedApplication;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -9,7 +11,7 @@ import java.util.Base64;
 
 public class AES256 {
 
-    private static final String key = "qMg88AeRKteP4H2NTzU9s3tTWafmcBZGs3CTE7rRUqJDBVQqFqrQ4aYLmx7YZfNN";
+    private static final String key = DetectedApplication.encryptionKey;
 
     public static String encrypt(String toEncrypt) {
         try {

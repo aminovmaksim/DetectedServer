@@ -23,6 +23,14 @@ public class Response {
         this.data = data;
     }
 
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
     public static final int TYPE_DEFAULT = 0;
 
     public static final int TYPE_ERROR = -1;

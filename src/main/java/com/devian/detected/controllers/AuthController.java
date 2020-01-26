@@ -5,7 +5,7 @@ import com.devian.detected.domain.User;
 import com.devian.detected.domain.UserStats;
 import com.devian.detected.repository.Database;
 import com.devian.detected.utils.GsonSerializer;
-import com.devian.detected.utils.NetworkService;
+import com.devian.detected.utils.NetworkManager;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +33,7 @@ public class AuthController {
     private ResponseEntity<Response> auth(
             @RequestHeader(value = "data") String data
     ) {
-        String requestData = NetworkService.getInstance().proceedRequest(data);
+        String requestData = NetworkManager.getInstance().proceedRequest(data);
         log.info("New Auth: " + requestData);
 
         User user = gson.fromJson(requestData, User.class);
@@ -52,22 +52,22 @@ public class AuthController {
             database.getStatsRepository().save(userStats);
         }
 
-        return NetworkService.getInstance().proceedResponse(Response.TYPE_AUTH_SUCCESS);
+        return NetworkManager.getInstance().proceedResponse(Response.TYPE_AUTH_SUCCESS);
     }
 
     @GetMapping(value = "/getUserInfo")
     private ResponseEntity<Response> getUserInfo(
             @RequestHeader(value = "data") String data
     ) {
-        String requestData = NetworkService.getInstance().proceedRequest(data);
+        String requestData = NetworkManager.getInstance().proceedRequest(data);
         log.info("New getUserInfo request: " + requestData);
 
         Optional<User> optionalUser = database.getUserRepository().findByUid(requestData);
         if (optionalUser.isPresent()) {
             String response = gson.toJson(optionalUser.get());
-            return NetworkService.getInstance().proceedResponse(Response.TYPE_AUTH_SUCCESS, response);
+            return NetworkManager.getInstance().proceedResponse(Response.TYPE_AUTH_SUCCESS, response);
         } else {
-            return NetworkService.getInstance().proceedResponse(Response.TYPE_AUTH_FAILED);
+            return NetworkManager.getInstance().proceedResponse(Response.TYPE_AUTH_FAILED);
         }
     }
 
@@ -75,7 +75,7 @@ public class AuthController {
     private ResponseEntity<Response> changeNickname(
             @RequestHeader(value = "data") String data
     ) {
-        String requestData = NetworkService.getInstance().proceedRequest(data);
+        String requestData = NetworkManager.getInstance().proceedRequest(data);
         log.info("New changeNickname request: " + requestData);
 
         User user = gson.fromJson(requestData, User.class);
@@ -84,13 +84,13 @@ public class AuthController {
         if (optionalUser.isPresent()) {
             Optional<User> sameNickname = database.getUserRepository().findByDisplayName(user.getDisplayName());
             if (sameNickname.isPresent()) {
-                return NetworkService.getInstance().proceedResponse(Response.TYPE_CHANGE_NICKNAME_EXISTS);
+                return NetworkManager.getInstance().proceedResponse(Response.TYPE_CHANGE_NICKNAME_EXISTS);
             } else {
                 database.getUserRepository().save(user);
-                return NetworkService.getInstance().proceedResponse(Response.TYPE_CHANGE_NICKNAME_SUCCESS);
+                return NetworkManager.getInstance().proceedResponse(Response.TYPE_CHANGE_NICKNAME_SUCCESS);
             }
         } else {
-            return NetworkService.getInstance().proceedResponse(Response.TYPE_CHANGE_NICKNAME_FAILURE);
+            return NetworkManager.getInstance().proceedResponse(Response.TYPE_CHANGE_NICKNAME_FAILURE);
         }
     }
 }

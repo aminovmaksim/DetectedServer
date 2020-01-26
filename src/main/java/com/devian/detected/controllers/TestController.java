@@ -1,7 +1,7 @@
 package com.devian.detected.controllers;
 
 import com.devian.detected.domain.network.Response;
-import com.devian.detected.utils.NetworkService;
+import com.devian.detected.utils.NetworkManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ public class TestController {
     private ResponseEntity<Response> getProfile() {
         log.info("Test connection request");
 
-        return NetworkService.getInstance().proceedResponse(Response.TYPE_DEFAULT);
+        return NetworkManager.getInstance().proceedResponse(Response.TYPE_DEFAULT);
     }
 
 }

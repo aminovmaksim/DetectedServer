@@ -5,7 +5,7 @@ import com.devian.detected.domain.Task;
 import com.devian.detected.domain.UserStats;
 import com.devian.detected.repository.Database;
 import com.devian.detected.utils.GsonSerializer;
-import com.devian.detected.utils.NetworkService;
+import com.devian.detected.utils.NetworkManager;
 import com.devian.detected.utils.TimeManager;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
@@ -34,13 +34,13 @@ public class TaskController {
     private ResponseEntity<Response> addTask(
             @RequestHeader(value = "data") String data
     ) {
-        String requestData = NetworkService.getInstance().proceedRequest(data);
+        String requestData = NetworkManager.getInstance().proceedRequest(data);
         log.info("New Task: " + requestData);
 
         Task task = gson.fromJson(requestData, Task.class);
         database.getTaskRepository().save(task);
 
-        return NetworkService.getInstance().proceedResponse(Response.TYPE_TASK_ADDED);
+        return NetworkManager.getInstance().proceedResponse(Response.TYPE_TASK_ADDED);
     }
 
     @GetMapping(value = "/getMapTasks")
@@ -50,7 +50,7 @@ public class TaskController {
         List<Task> mapTasks = database.getTaskRepository().findAllByTypeAndCompleted(Task.TYPE_MAP, 0);
         String responseData = gson.toJson(mapTasks);
 
-        return NetworkService.getInstance().proceedResponse(Response.TYPE_TASK_SUCCESS, responseData);
+        return NetworkManager.getInstance().proceedResponse(Response.TYPE_TASK_SUCCESS, responseData);
     }
 
     @GetMapping(value = "/getTextTasks")
@@ -60,29 +60,29 @@ public class TaskController {
         List<Task> textTasks = database.getTaskRepository().findAllByTypeAndCompleted(Task.TYPE_TEXT, 0);
         String responseData = gson.toJson(textTasks);
 
-        return NetworkService.getInstance().proceedResponse(Response.TYPE_TASK_SUCCESS, responseData);
+        return NetworkManager.getInstance().proceedResponse(Response.TYPE_TASK_SUCCESS, responseData);
     }
 
     @PostMapping(value = "/scanTag")
     private ResponseEntity<Response> scanTag(
             @RequestHeader(value = "data") String data
     ) {
-        String requestData = NetworkService.getInstance().proceedRequest(data);
+        String requestData = NetworkManager.getInstance().proceedRequest(data);
         log.info("New tag scanned: " + requestData);
 
         Task user_task = gson.fromJson(requestData, Task.class);
         Optional<Task> optionalTask = database.getTaskRepository().findByTagId(user_task.getTagId());
         if (!optionalTask.isPresent()) {
-            return NetworkService.getInstance().proceedResponse(Response.TYPE_TASK_FAILURE);
+            return NetworkManager.getInstance().proceedResponse(Response.TYPE_TASK_FAILURE);
         }
         Optional<UserStats> optionalUserStats = database.getStatsRepository().findByUid(user_task.getExecutor());
         if (!optionalUserStats.isPresent()) {
-            return NetworkService.getInstance().proceedResponse(Response.TYPE_TASK_FAILURE);
+            return NetworkManager.getInstance().proceedResponse(Response.TYPE_TASK_FAILURE);
         }
         UserStats userStats = optionalUserStats.get();
         Task task = optionalTask.get();
         if (task.isCompleted()) {
-            return NetworkService.getInstance().proceedResponse(Response.TYPE_TASK_ALREADY_COMPLETED);
+            return NetworkManager.getInstance().proceedResponse(Response.TYPE_TASK_ALREADY_COMPLETED);
         }
         userStats.completeTask(task);
         task.setCompleted(1);
@@ -92,7 +92,7 @@ public class TaskController {
         database.getStatsRepository().save(userStats);
         String responseData = gson.toJson(task);
 
-        return NetworkService.getInstance().proceedResponse(Response.TYPE_TASK_COMPLETED, responseData);
+        return NetworkManager.getInstance().proceedResponse(Response.TYPE_TASK_COMPLETED, responseData);
     }
 
     @GetMapping(value = "/getEvent")
@@ -101,6 +101,6 @@ public class TaskController {
 
         String event = "Стань топ-1 среди всех кулхацкеров до 31 января и получи секретное приглашение";
 
-        return NetworkService.getInstance().proceedResponse(Response.TYPE_TASK_SUCCESS, event);
+        return NetworkManager.getInstance().proceedResponse(Response.TYPE_TASK_SUCCESS, event);
     }
 }

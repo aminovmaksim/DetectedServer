@@ -3,16 +3,18 @@ package com.devian.detected.utils;
 import com.devian.detected.DetectedApplication;
 import com.devian.detected.domain.network.Response;
 import com.devian.detected.security.AES256;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-public class NetworkService {
+@Slf4j
+public class NetworkManager {
 
-    private static NetworkService mInstance;
+    private static NetworkManager mInstance;
 
-    public static NetworkService getInstance() {
+    public static NetworkManager getInstance() {
         if (mInstance == null) {
-            mInstance = new NetworkService();
+            mInstance = new NetworkManager();
         }
         return mInstance;
     }
@@ -30,10 +32,14 @@ public class NetworkService {
     }
 
     public ResponseEntity<Response> proceedResponse(int responseType) {
+        Response response = new Response(responseType);
+        log.info(GsonSerializer.getInstance().getGson().toJson(response));
         return new ResponseEntity<>(new Response(responseType), HttpStatus.OK);
     }
 
     public ResponseEntity<Response> proceedResponse(int responseType, String data) {
+        Response response = new Response(responseType, data);
+        log.info(GsonSerializer.getInstance().getGson().toJson(response));
         if (DetectedApplication.encryptionEnabled) {
             return new ResponseEntity<>(new Response(responseType, AES256.encrypt(data)), HttpStatus.OK);
         } else {

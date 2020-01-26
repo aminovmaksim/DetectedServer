@@ -32,7 +32,7 @@ public class AES256 {
             SecretKeySpec secretKeySpec = new SecretKeySpec(keyBytes, "AES");
 
             // Encrypt.
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");
             cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivParameterSpec);
             byte[] encrypted = cipher.doFinal(clean);
 

@@ -6,7 +6,7 @@ import com.devian.detected.domain.UserStats;
 import com.devian.detected.repository.Database;
 import com.devian.detected.services.RankingService;
 import com.devian.detected.utils.GsonSerializer;
-import com.devian.detected.utils.NetworkService;
+import com.devian.detected.utils.NetworkManager;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -34,16 +34,16 @@ public class StatsController {
     private ResponseEntity<Response> getStats(
             @RequestHeader(value = "data") String data
     ) {
-        String uid = NetworkService.getInstance().proceedRequest(data);
+        String uid = NetworkManager.getInstance().proceedRequest(data);
         log.info("New stats request: " + uid);
 
         Optional<UserStats> optionalUserStats = database.getStatsRepository().findByUid(uid);
         if (!optionalUserStats.isPresent()) {
-            return NetworkService.getInstance().proceedResponse(Response.TYPE_STATS_DOES_NOT_EXIST);
+            return NetworkManager.getInstance().proceedResponse(Response.TYPE_STATS_DOES_NOT_EXIST);
         }
         String userStats = gson.toJson(optionalUserStats.get());
 
-        return NetworkService.getInstance().proceedResponse(Response.TYPE_STATS_EXISTS, userStats);
+        return NetworkManager.getInstance().proceedResponse(Response.TYPE_STATS_EXISTS, userStats);
     }
 
     @GetMapping(value = "/getRankTop10", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -52,19 +52,19 @@ public class StatsController {
         List<RankRow> rankRows = RankingService.top10;
         String responseData = gson.toJson(rankRows);
 
-        return NetworkService.getInstance().proceedResponse(Response.TYPE_RANK_SUCCESS, responseData);
+        return NetworkManager.getInstance().proceedResponse(Response.TYPE_RANK_SUCCESS, responseData);
     }
 
     @GetMapping(value = "/getPersonalRank", produces = MediaType.APPLICATION_JSON_VALUE)
     private ResponseEntity<Response> getPersonalRank(
             @RequestHeader(value = "data") String data
     ) {
-        String uid = NetworkService.getInstance().proceedRequest(data);
+        String uid = NetworkManager.getInstance().proceedRequest(data);
         log.info("New rank request: " + uid);
 
         Optional<RankRow> optionalRankRow = database.getRankRepository().findByUid(uid);
         return optionalRankRow
-                .map(rankRow -> NetworkService.getInstance().proceedResponse(Response.TYPE_RANK_SUCCESS, gson.toJson(rankRow)))
-                .orElseGet(() -> NetworkService.getInstance().proceedResponse(Response.TYPE_RANK_FAILURE));
+                .map(rankRow -> NetworkManager.getInstance().proceedResponse(Response.TYPE_RANK_SUCCESS, gson.toJson(rankRow)))
+                .orElseGet(() -> NetworkManager.getInstance().proceedResponse(Response.TYPE_RANK_FAILURE));
     }
 }

@@ -87,7 +87,8 @@ public class AuthController {
                 return NetworkManager.getInstance().proceedResponse(Response.TYPE_CHANGE_NICKNAME_EXISTS);
             } else {
                 database.getUserRepository().save(user);
-                return NetworkManager.getInstance().proceedResponse(Response.TYPE_CHANGE_NICKNAME_SUCCESS);
+                String response = gson.toJson(user);
+                return NetworkManager.getInstance().proceedResponse(Response.TYPE_CHANGE_NICKNAME_SUCCESS, response);
             }
         } else {
             return NetworkManager.getInstance().proceedResponse(Response.TYPE_CHANGE_NICKNAME_FAILURE);

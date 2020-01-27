@@ -30,7 +30,7 @@ public class StatsController {
         this.database = database;
     }
 
-    @GetMapping(value = "/getStats", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/getUserStats", produces = MediaType.APPLICATION_JSON_VALUE)
     private ResponseEntity<Response> getStats(
             @RequestHeader(value = "data") String data
     ) {
@@ -55,7 +55,7 @@ public class StatsController {
         return NetworkManager.getInstance().proceedResponse(Response.TYPE_RANK_SUCCESS, responseData);
     }
 
-    @GetMapping(value = "/getPersonalRank", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/getSelfRank", produces = MediaType.APPLICATION_JSON_VALUE)
     private ResponseEntity<Response> getPersonalRank(
             @RequestHeader(value = "data") String data
     ) {

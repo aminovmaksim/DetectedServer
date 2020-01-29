@@ -19,6 +19,7 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
+@SuppressWarnings("unused")
 public class AuthController {
 
     private Gson gson = GsonSerializer.getInstance().getGson();

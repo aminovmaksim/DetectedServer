@@ -1,5 +1,6 @@
 package com.devian.detected.utils;
 
+@SuppressWarnings("unused")
 public class LevelManager {
 
     /*

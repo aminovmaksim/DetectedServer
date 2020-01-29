@@ -1,5 +1,6 @@
 package com.devian.detected.domain.network;
 
+@SuppressWarnings("unused")
 public class Response {
 
     private int type;

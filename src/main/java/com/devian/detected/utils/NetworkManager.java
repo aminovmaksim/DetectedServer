@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @Slf4j
+@SuppressWarnings("unused")
 public class NetworkManager {
 
     private static NetworkManager mInstance;

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
+@SuppressWarnings("unused")
 public class TestController {
 
     @GetMapping(value = "/testConnection", produces = MediaType.APPLICATION_JSON_VALUE)

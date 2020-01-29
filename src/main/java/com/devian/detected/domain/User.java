@@ -9,6 +9,7 @@ import java.util.Date;
 @Data
 @Entity
 @NoArgsConstructor
+@SuppressWarnings("unused")
 @Table(name = "users")
 public class User {
     @Id

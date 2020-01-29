@@ -20,6 +20,7 @@ import java.util.Optional;
 
 @Slf4j
 @RestController()
+@SuppressWarnings("unused")
 public class StatsController {
 
     private Gson gson = GsonSerializer.getInstance().getGson();

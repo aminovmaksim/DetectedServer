@@ -1,6 +1,5 @@
 package com.devian.detected.repository;
 
-import com.devian.detected.domain.User;
 import com.devian.detected.domain.UserStats;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

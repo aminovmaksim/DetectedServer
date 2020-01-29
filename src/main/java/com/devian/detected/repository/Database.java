@@ -12,7 +12,9 @@ public class Database {
     @Getter
     private final StatsRepository statsRepository;
     @Getter
-    private final TaskRepository taskRepository;
+    private final GeoTextTaskRepository geoTextTaskRepository;
+    @Getter
+    private final GeoTaskRepository geoTaskRepository;
     @Getter
     private final RankRepository rankRepository;
 

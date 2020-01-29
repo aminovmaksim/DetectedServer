@@ -6,9 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
+@SuppressWarnings("unused")
 public interface UserRepository extends CrudRepository<User, String> {
     Optional<User> findByUid(String uid);
     Optional<User> findByEmail(String email);

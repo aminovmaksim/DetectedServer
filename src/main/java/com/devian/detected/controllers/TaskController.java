@@ -68,7 +68,7 @@ public class TaskController {
         if (optionalGeoTag.get().isCompleted()) {
             return NetworkManager.getInstance().proceedResponse(Response.TYPE_TASK_ALREADY_COMPLETED);
         }
-        GeoTask task = proceedTask(optionalGeoTag.get());
+        GeoTask task = proceedTask(optionalGeoTag.get(), user_task.getExecutor());
         if (task != null) {
             database.getGeoTaskRepository().save(task);
             String responseData = gson.toJson(task);
@@ -92,8 +92,9 @@ public class TaskController {
         if (optionalGeoTextTask.get().isCompleted()) {
             return NetworkManager.getInstance().proceedResponse(Response.TYPE_TASK_ALREADY_COMPLETED);
         }
-        GeoTextTask task = proceedTask(optionalGeoTextTask.get());
+        GeoTextTask task = proceedTask(optionalGeoTextTask.get(), user_task.getExecutor());
         if (task != null) {
+            log.info("============== " + gson.toJson(task));
             database.getGeoTextTaskRepository().save(task);
             String responseData = gson.toJson(task);
             return NetworkManager.getInstance().proceedResponse(Response.TYPE_TASK_COMPLETED, responseData);
@@ -101,17 +102,19 @@ public class TaskController {
         return NetworkManager.getInstance().proceedResponse(Response.TYPE_TASK_FAILURE);
     }
 
-    private <T extends Task> T proceedTask(T task) {
-        Optional<UserStats> optionalUserStats = database.getStatsRepository().findByUid(task.getExecutor());
+    private <T extends Task> T proceedTask(T task, String executor) {
+        Optional<UserStats> optionalUserStats = database.getStatsRepository().findByUid(executor);
         if (!optionalUserStats.isPresent()) {
             return null;
         }
+
         UserStats userStats = optionalUserStats.get();
         userStats.completeTask(task);
+        database.getStatsRepository().save(userStats);
+
         task.setCompleted(true);
         task.setExecutor(userStats.getUid());
         task.setCompletedTime(TimeManager.getCurrentTime());
-        database.getStatsRepository().save(userStats);
         return task;
     }
 

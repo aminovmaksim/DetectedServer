@@ -74,8 +74,7 @@ public class AuthController {
 
     @PostMapping(value = "/changeNickname")
     private ResponseEntity<Response> changeNickname(
-            @RequestHeader(value = "data") String data
-    ) {
+            @RequestHeader(value = "data") String data) {
         String requestData = NetworkManager.getInstance().proceedRequest(data);
         log.info("New changeNickname request: " + requestData);
 

@@ -53,7 +53,8 @@ public class AuthController {
             database.getStatsRepository().save(userStats);
         }
 
-        return NetworkManager.getInstance().proceedResponse(Response.TYPE_AUTH_SUCCESS);
+        String response = gson.toJson(user);
+        return NetworkManager.getInstance().proceedResponse(Response.TYPE_AUTH_SUCCESS, response);
     }
 
     @GetMapping(value = "/getUserInfo")

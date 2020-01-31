@@ -8,7 +8,6 @@ import com.devian.detected.domain.UserStats;
 import com.devian.detected.repository.Database;
 import com.devian.detected.utils.GsonSerializer;
 import com.devian.detected.utils.NetworkManager;
-import com.devian.detected.utils.TimeManager;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -114,7 +114,7 @@ public class TaskController {
 
         task.setCompleted(true);
         task.setExecutor(userStats.getUid());
-        task.setCompletedTime(TimeManager.getCurrentTime());
+        task.setCompletedTime(new Date());
         return task;
     }
 

@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.MappedSuperclass;
-import java.sql.Date;
+import java.util.Date;
 
 @Getter
 @Setter

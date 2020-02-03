@@ -56,9 +56,11 @@ public class TaskController {
     @PostMapping(value = "/scanGeoTag")
     private ResponseEntity<Response> scanGeoTag(
             @RequestHeader(value = "data") String data
-    ) {
+    ) throws InterruptedException {
         String requestData = NetworkManager.getInstance().proceedRequest(data);
         log.info("New geo tag scanned: " + requestData);
+
+        Thread.sleep(3000);
 
         GeoTask user_task = gson.fromJson(requestData, GeoTask.class);
         Optional<GeoTask> optionalGeoTag = database.getGeoTaskRepository().findByTagId(user_task.getTagId());
@@ -122,7 +124,7 @@ public class TaskController {
     private ResponseEntity<Response> getEvent() {
         log.info("New event request");
 
-        String event = "Стань топ-1 среди всех кулхацкеров до 31 января и получи секретное приглашение";
+        String event = "Current event";
 
         return NetworkManager.getInstance().proceedResponse(Response.TYPE_TASK_SUCCESS, event);
     }

@@ -6,4 +6,4 @@ spring.jpa.hibernate.ddl-auto=update
 
 # Encryption
 encryption.enabled=true
-encryption.key=********************
+encryption.key=YOUR_KEY

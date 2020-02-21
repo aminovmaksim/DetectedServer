@@ -1,3 +1,6 @@
+#Server
+server.port = 80
+
 # Database
 spring.datasource.url=jdbc:postgresql://localhost:5432/detected
 spring.datasource.username=postgres
@@ -5,5 +8,5 @@ spring.datasource.password=123456
 spring.jpa.hibernate.ddl-auto=update
 
 # Encryption
-encryption.enabled=true
+encryption.enabled=false
 encryption.key=YOUR_KEY

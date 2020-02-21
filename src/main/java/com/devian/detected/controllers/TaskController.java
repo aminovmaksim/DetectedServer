@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@RestController()
+@RestController(value = "/api")
 @SuppressWarnings("unused")
 public class TaskController {
 

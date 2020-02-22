@@ -1,8 +1,10 @@
 package com.devian.detected.controllers;
 
+import com.devian.detected.domain.Admin;
 import com.devian.detected.domain.network.Response;
 import com.devian.detected.domain.tasks.GeoTask;
 import com.devian.detected.domain.tasks.GeoTextTask;
+import com.devian.detected.domain.tasks.Tag;
 import com.devian.detected.domain.tasks.Task;
 import com.devian.detected.domain.UserStats;
 import com.devian.detected.repository.Database;
@@ -125,5 +127,22 @@ public class TaskController {
         String event = "Current event";
 
         return NetworkManager.getInstance().proceedResponse(Response.TYPE_TASK_SUCCESS, event);
+    }
+
+    @PostMapping(value = "/addTag")
+    private ResponseEntity<Response> addTag(
+            @RequestHeader(value = "data") String data,
+            @RequestHeader(value = "admin_id") String admin_id
+    ) {
+        String requestData = NetworkManager.getInstance().proceedRequest(data);
+        log.info("Add tag request from: " + admin_id + ": " + requestData);
+
+        Optional<Admin> optionalAdmin = database.getAdminsRepository().findByUid(admin_id);
+        if (optionalAdmin.isPresent()) {
+            Tag tag = gson.fromJson(data, Tag.class);
+            database.getAvailableTagsRepository().save(tag);
+            return NetworkManager.getInstance().proceedResponse(Response.TYPE_ADD_TAG_SUCCESS);
+        } else
+            return NetworkManager.getInstance().proceedResponse(Response.TYPE_ADD_TAG_ADMIN_FAILURE);
     }
 }

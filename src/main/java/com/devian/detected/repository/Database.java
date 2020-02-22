@@ -17,5 +17,9 @@ public class Database {
     private final GeoTaskRepository geoTaskRepository;
     @Getter
     private final RankRepository rankRepository;
+    @Getter
+    private final AvailableTagsRepository availableTagsRepository;
+    @Getter
+    private final AdminsRepository adminsRepository;
 
 }

@@ -34,13 +34,11 @@ public class NetworkManager {
 
     public ResponseEntity<Response> proceedResponse(int responseType) {
         Response response = new Response(responseType);
-        log.info(GsonSerializer.getInstance().getGson().toJson(response));
         return new ResponseEntity<>(new Response(responseType), HttpStatus.OK);
     }
 
     public ResponseEntity<Response> proceedResponse(int responseType, String data) {
         Response response = new Response(responseType, data);
-        log.info(GsonSerializer.getInstance().getGson().toJson(response));
         if (DetectedApplication.encryptionEnabled) {
             return new ResponseEntity<>(new Response(responseType, AES256.encrypt(data)), HttpStatus.OK);
         } else {

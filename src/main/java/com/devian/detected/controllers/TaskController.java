@@ -1,6 +1,7 @@
 package com.devian.detected.controllers;
 
 import com.devian.detected.domain.Admin;
+import com.devian.detected.domain.Event;
 import com.devian.detected.domain.network.Response;
 import com.devian.detected.domain.tasks.GeoTask;
 import com.devian.detected.domain.tasks.GeoTextTask;
@@ -124,7 +125,11 @@ public class TaskController {
     private ResponseEntity<Response> getEvent() {
         log.info("New event request");
 
-        String event = "Current event";
+        List<Event> events = database.getEventRepository().findAll();
+        String event = "На данный момент, никаких событий не проходит";
+        if (events.size() != 0)
+            if (events.get(0) != null)
+                event = events.get(0).getText();
 
         return NetworkManager.getInstance().proceedResponse(Response.TYPE_TASK_SUCCESS, event);
     }

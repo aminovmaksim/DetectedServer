@@ -21,5 +21,7 @@ public class Database {
     private final AvailableTagsRepository availableTagsRepository;
     @Getter
     private final AdminsRepository adminsRepository;
+    @Getter
+    private final EventRepository eventRepository;
 
 }

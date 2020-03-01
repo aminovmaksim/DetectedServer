@@ -1,20 +1,26 @@
-div.appName {
+* {
     margin: 0;
+    padding: 0;
+}
+
+.imgbox {
+    display: grid;
+    height: 100%;
+}
+
+.center-fit {
+    max-width: 70%;
+    margin: auto;
     position: absolute;
     top: 50%;
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
-    font-family: HACKED, serif;
-    color: white;
-    background-color: black;
-    font-size: 10vw;
-    text-align: center;
-    width: 99%;
+    left: 50%;
+    -ms-transform: translateY(-50%) translateX(-50%);
+    transform: translateY(-50%) translateX(-50%);
 }
 
 img.button {
-    width: 10%;
-    margin: 0;
+    max-width: 20%;
+    margin: auto;
     position: absolute;
     top: 60%;
     left: 50%;

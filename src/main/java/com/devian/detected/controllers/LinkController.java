@@ -13,6 +13,6 @@ public class LinkController {
 
     @RequestMapping(value = "/to_google_play")
     private RedirectView redirectToPlayMarket() {
-        return new RedirectView("https://play.google.com/store");
+        return new RedirectView("https://play.google.com/store/apps/details?id=com.devian.detected");
     }
 }
